@@ -1,10 +1,13 @@
 package com.colpatria.crudusersapi.user.application;
 
+import com.colpatria.crudusersapi.user.dto.Task;
 import com.colpatria.crudusersapi.user.dto.User;
 import com.colpatria.crudusersapi.user.infrastructure.ports.UserRepository;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -63,10 +66,12 @@ public class UserService {
   }
 
   public void deleteById(Long id) {
+    log.info("User deleted");
     userRepository.deleteById(id);
   }
 
   public void deleteAll() {
+    log.info("Delete all users");
     userRepository.deleteAll();
   }
 
@@ -78,6 +83,15 @@ public class UserService {
       user.setNames(generatedString);
       user.setSurnames(generatedString);
       user.setEmail(generatedString + "@" + generatedString);
+      Set<Task> tasks = new HashSet<>();
+      for (int j = 0; j < 3; j++) {
+        Task task = new Task();
+        task.setName(generatedString);
+        task.setDescription(generatedString);
+        task.setPriority(1);
+        tasks.add(task);
+      }
+      user.setTasks(tasks);
       save(user);
     }
   }
