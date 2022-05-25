@@ -2,9 +2,12 @@ package com.colpatria.crudusersapi.user.infrastructure.adapters;
 
 import com.colpatria.crudusersapi.user.application.UserService;
 import com.colpatria.crudusersapi.user.dto.User;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,9 +47,16 @@ public class UserController {
     return ResponseEntity.ok(userService.findById(id));
   }
 
-  @GetMapping(value = "/{email}/email", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<User> findByEmail(@PathVariable String email) {
     return ResponseEntity.ok(userService.findByEmail(email));
+  }
+
+  @GetMapping(value = "/createdDate/{from}/{to}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<User>> findByCreatedDateBetween(
+      @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime from,
+      @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime to) {
+    return ResponseEntity.ok(userService.findByCreatedDateBetween(from, to));
   }
 
   @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

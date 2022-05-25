@@ -2,6 +2,8 @@ package com.colpatria.crudusersapi.user.application;
 
 import com.colpatria.crudusersapi.user.dto.User;
 import com.colpatria.crudusersapi.user.infrastructure.ports.UserRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,10 @@ public class UserService {
   public User findByEmail(String email) {
     log.info("Find by email");
     return userRepository.findByEmail(email).orElseThrow();
+  }
+
+  public List<User> findByCreatedDateBetween(LocalDateTime from, LocalDateTime to) {
+    return userRepository.findByCreatedDateBetween(from, to);
   }
 
   public User update(User user) {
