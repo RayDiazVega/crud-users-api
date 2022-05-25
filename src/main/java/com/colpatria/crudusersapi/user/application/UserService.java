@@ -56,6 +56,14 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  public void deleteById(Long id) {
+    userRepository.deleteById(id);
+  }
+
+  public void deleteAll() {
+    userRepository.deleteAll();
+  }
+
   @PostConstruct
   public void insert() {
     for (int i = 0; i < 50; i++) {
