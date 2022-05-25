@@ -1,1 +1,14 @@
+spring:
+  application:
+    name: spring boot crud-users-api
+  datasource:
+    url: jdbc:h2:mem:db
+    username: sa
+    password: sa
+  h2:
+    console.enabled: true
 
+server:
+  port: 8080
+  servlet:
+    context-path: /crud-users-api
