@@ -29,12 +29,12 @@ class BTaskControllerTest {
   @Test
   @Order(1)
   void saveStatus200() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/user")
+    mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON).content(user))
         .andExpectAll(MockMvcResultMatchers.status().isOk())
         .andDo(MockMvcResultHandlers.print());
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/user/2/task")
+    mockMvc.perform(MockMvcRequestBuilders.post("/users/2/tasks")
             .contentType(MediaType.APPLICATION_JSON).content(task))
         .andExpectAll(MockMvcResultMatchers.status().isOk())
         .andDo(MockMvcResultHandlers.print());
@@ -43,7 +43,7 @@ class BTaskControllerTest {
   @Test
   @Order(2)
   void saveStatus405() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.patch("/user/task"))
+    mockMvc.perform(MockMvcRequestBuilders.patch("/users/tasks"))
         .andExpectAll(MockMvcResultMatchers.status().isMethodNotAllowed(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             MockMvcResultMatchers.jsonPath("$.error")
@@ -55,7 +55,7 @@ class BTaskControllerTest {
   @Test
   @Order(3)
   void findAllByUserId() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/user/2/task"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/users/2/tasks"))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             MockMvcResultMatchers.jsonPath("$.[0].id").isNumber(),
@@ -66,7 +66,7 @@ class BTaskControllerTest {
   @Test
   @Order(4)
   void findById() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/user/task/3"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/users/tasks/3"))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             MockMvcResultMatchers.jsonPath("$.id").isNumber(),
@@ -78,7 +78,7 @@ class BTaskControllerTest {
   @Order(5)
   void update() throws Exception {
     task = task.replace("1", "3");
-    mockMvc.perform(MockMvcRequestBuilders.put("/user/task")
+    mockMvc.perform(MockMvcRequestBuilders.put("/users/tasks")
             .contentType(MediaType.APPLICATION_JSON).content(task))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
@@ -89,7 +89,7 @@ class BTaskControllerTest {
   @Test
   @Order(6)
   void deleteById() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.delete("/user/task/3"))
+    mockMvc.perform(MockMvcRequestBuilders.delete("/users/tasks/3"))
         .andExpectAll(MockMvcResultMatchers.status().isOk())
         .andDo(MockMvcResultHandlers.print());
   }

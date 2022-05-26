@@ -28,7 +28,7 @@ class AUserControllerTest {
   @Test
   @Order(1)
   void saveStatus200() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/user")
+    mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON).content(user))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
@@ -40,7 +40,7 @@ class AUserControllerTest {
   @Test
   @Order(1)
   void saveStatus400() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/user")
+    mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON).content(user))
         .andExpectAll(MockMvcResultMatchers.status().isBadRequest(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
@@ -50,7 +50,7 @@ class AUserControllerTest {
 
     user = user.replace("Poracius", "1");
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/user")
+    mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON).content(user))
         .andExpectAll(MockMvcResultMatchers.status().isBadRequest(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
@@ -62,7 +62,7 @@ class AUserControllerTest {
   @Test
   @Order(2)
   void findAll() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/user"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/users"))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             MockMvcResultMatchers.jsonPath("$.totalElements").isNumber(),
@@ -73,7 +73,7 @@ class AUserControllerTest {
   @Test
   @Order(3)
   void findById() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/user/1"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/users/1"))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             MockMvcResultMatchers.jsonPath("$.id").isNumber(),
@@ -84,7 +84,7 @@ class AUserControllerTest {
   @Test
   @Order(4)
   void findByEmail() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/user/email/poraciusyettengia@imgur.com"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/users/email/poraciusyettengia@imgur.com"))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             MockMvcResultMatchers.jsonPath("$.id").isNumber(),
@@ -95,7 +95,7 @@ class AUserControllerTest {
   @Test
   @Order(5)
   void findByCreatedDateBetween() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/user/createdDate/{from}/{to}",
+    mockMvc.perform(MockMvcRequestBuilders.get("/users/createdDate/{from}/{to}",
             LocalDate.now() + "T00:00:00", LocalDate.now() + "T23:59:59"))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
@@ -107,7 +107,7 @@ class AUserControllerTest {
   @Test
   @Order(6)
   void update() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.put("/user")
+    mockMvc.perform(MockMvcRequestBuilders.put("/users")
             .contentType(MediaType.APPLICATION_JSON).content(user))
         .andExpectAll(MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
@@ -119,7 +119,7 @@ class AUserControllerTest {
   @Test
   @Order(7)
   void deleteById() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.delete("/user/1"))
+    mockMvc.perform(MockMvcRequestBuilders.delete("/users/1"))
         .andExpectAll(MockMvcResultMatchers.status().isOk())
         .andDo(MockMvcResultHandlers.print());
   }
@@ -127,7 +127,7 @@ class AUserControllerTest {
   @Test
   @Order(8)
   void deleteAll() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.delete("/user"))
+    mockMvc.perform(MockMvcRequestBuilders.delete("/users"))
         .andExpectAll(MockMvcResultMatchers.status().isOk())
         .andDo(MockMvcResultHandlers.print());
   }
