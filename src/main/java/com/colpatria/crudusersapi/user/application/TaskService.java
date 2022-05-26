@@ -20,7 +20,7 @@ public class TaskService {
   private TaskRepository taskRepository;
 
   public void save(Long id, Task task) {
-    task.setId(null);
+    task.setId(0L);
     User user = userRepository.findById(id).orElseThrow();
     user.getTasks().add(task);
     log.info("Task created");

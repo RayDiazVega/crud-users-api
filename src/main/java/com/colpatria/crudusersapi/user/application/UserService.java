@@ -22,7 +22,7 @@ public class UserService {
     if (userRepository.findByEmail(user.getEmail()).isPresent()) {
       throw new IllegalArgumentException("¡User email already exists!");
     }
-    user.setId(null);
+    user.setId(0L);
     log.info("User created");
     return userRepository.save(user);
   }

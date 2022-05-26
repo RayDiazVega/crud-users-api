@@ -33,7 +33,7 @@ public class Task {
   private Long id;
 
   @NotNull(message = "name is required")
-  @Pattern(regexp = "[a-zA-Z\\s]+", message = "name must be a valid value")
+  @Pattern(regexp = "[a-zA-Z.:\\s]+", message = "name must be a valid value")
   @Column(nullable = false)
   private String name;
 

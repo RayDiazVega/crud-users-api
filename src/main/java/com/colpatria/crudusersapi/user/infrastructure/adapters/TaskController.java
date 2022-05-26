@@ -41,7 +41,7 @@ public class TaskController {
     return ResponseEntity.ok(taskService.findById(id));
   }
 
-  @PutMapping(value = "/task", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(value = "/task", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Task> update(@Valid @RequestBody Task task) {
     return ResponseEntity.ok(taskService.update(task));
   }
