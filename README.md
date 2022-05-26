@@ -93,4 +93,26 @@ elementos internos aunque los externos cambien.
 
 ### Estrategia de Branching
 
-![img.png](img.png)
+![img.png](.bitbucket/docs/branching.png)
+
+Como estrategia de branching se utilizó **Git flow**, ya que permite una mayor organización en el
+flujo de integración.
+Como ramas principales se usaron main y develop, y como auxiliares las ramas feature/ y release/.
+
+### Persistencia y modelos de datos
+
+Como base de datos de uso **H2**, una base de datos en memoria, para agilizar el proceso de
+desarrollo.
+
+![img_1.png](.bitbucket/docs/modelo.png)
+
+Para el modelo de datos se implementó una relación de uno a muchos de la tabla `users` a `tasks`, en
+este caso un usuario puede tener varias tareas.
+
+## Conclusión
+
+Finalmente, para el manejo de errores se usó un `RestControllerAdvice` para el manejo de excepciones
+en toda la aplicación, permitiendo centralizar las respuestas de error en los casos contemplados.
+Además, entre los distintos endpoints desarrollados se encuentra `/users/createdDate/{from}/{to}`
+que permite filtrado por rango de fechas. Y se puede acceder a la documentation en swagger de la api
+en la ruta`http://localhost:8080/crud-users-api/swagger-ui/index.html#/`
