@@ -2,18 +2,15 @@ package com.colpatria.crudusersapi.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.Getter;
@@ -28,31 +25,26 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
-public class User {
+@Table(name = "tasks")
+public class Task {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @NotNull(message = "names is required")
-  @Pattern(regexp = "[a-zA-Z\\s]+", message = "names must be a valid value")
+  @NotNull(message = "name is required")
+  @Pattern(regexp = "[a-zA-Z.:\\s]+", message = "name must be a valid value")
   @Column(nullable = false)
-  private String names;
+  private String name;
 
-  @NotNull(message = "surnames is required")
-  @Pattern(regexp = "[a-zA-Z\\s]+", message = "surnames must be a valid value")
+  @Column
+  private String description;
+
+  @NotNull(message = "priority is required")
+  @Min(value = 1, message = "priority is positive number, min 1 is required")
+  @Max(value = 10, message = "priority is positive number, max 10 is required")
   @Column(nullable = false)
-  private String surnames;
-
-  @NotNull(message = "email is required")
-  @Email(message = "email must be a valid value")
-  @Column(nullable = false, unique = true)
-  private String email;
-
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "user_id")
-  private Set<Task> tasks;
+  private Integer priority;
 
   @JsonIgnore
   @CreatedDate

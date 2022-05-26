@@ -4,10 +4,7 @@ import com.colpatria.crudusersapi.user.dto.User;
 import com.colpatria.crudusersapi.user.infrastructure.ports.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +19,10 @@ public class UserService {
   private UserRepository userRepository;
 
   public User save(User user) {
-    Optional<User> userFind = userRepository.findByEmail(user.getEmail());
-    if (userFind.isPresent()) {
+    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
       throw new IllegalArgumentException("¡User email already exists!");
     }
-    user.setId(null);
+    user.setId(0L);
     log.info("User created");
     return userRepository.save(user);
   }
@@ -37,24 +33,23 @@ public class UserService {
   }
 
   public User findById(Long id) {
-    log.info("Find by id");
+    log.info("Find user by id");
     return userRepository.findById(id).orElseThrow();
   }
 
   public User findByEmail(String email) {
-    log.info("Find by email");
+    log.info("Find user by email");
     return userRepository.findByEmail(email).orElseThrow();
   }
 
   public List<User> findByCreatedDateBetween(LocalDateTime from, LocalDateTime to) {
+    log.info("Find users by created date between date range");
     return userRepository.findByCreatedDateBetween(from, to);
   }
 
   public User update(User user) {
-    User userFind = findById(user.getId());
-    if(!user.getEmail().equalsIgnoreCase(userFind.getEmail())) {
-      Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
-      if (optionalUser.isPresent()) {
+    if (!user.getEmail().equalsIgnoreCase(findById(user.getId()).getEmail())) {
+      if (userRepository.findByEmail(user.getEmail()).isPresent()) {
         throw new IllegalArgumentException("¡User email already exists!");
       }
     }
@@ -63,22 +58,12 @@ public class UserService {
   }
 
   public void deleteById(Long id) {
+    log.info("User deleted");
     userRepository.deleteById(id);
   }
 
   public void deleteAll() {
+    log.info("Delete all users");
     userRepository.deleteAll();
-  }
-
-  @PostConstruct
-  public void insert() {
-    for (int i = 0; i < 50; i++) {
-      String generatedString = RandomStringUtils.randomAlphabetic(6);
-      User user = new User();
-      user.setNames(generatedString);
-      user.setSurnames(generatedString);
-      user.setEmail(generatedString + "@" + generatedString);
-      save(user);
-    }
   }
 }
