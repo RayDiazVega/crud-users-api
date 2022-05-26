@@ -1,35 +1,29 @@
 package com.colpatria.crudusersapi;
 
-import com.colpatria.crudusersapi.user.application.TaskService;
-import com.colpatria.crudusersapi.user.application.UserService;
-import com.colpatria.crudusersapi.user.infrastructure.adapters.TaskController;
-import com.colpatria.crudusersapi.user.infrastructure.adapters.UserController;
-import com.colpatria.crudusersapi.user.infrastructure.ports.TaskRepository;
-import com.colpatria.crudusersapi.user.infrastructure.ports.UserRepository;
-import lombok.AllArgsConstructor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AutoConfigureMockMvc
 class CrudUsersApiApplicationTests {
 
-	TaskRepository taskRepository;
-	TaskService taskService;
-	TaskController taskController;
-	UserRepository userRepository;
-	UserService userService;
-	UserController userController;
+  @Autowired
+  MockMvc mockMvc;
 
-	@Test
-	void contextLoads() {
-		Assertions.assertNotNull(taskRepository);
-		Assertions.assertNotNull(taskService);
-		Assertions.assertNotNull(taskController);
-		Assertions.assertNotNull(userRepository);
-		Assertions.assertNotNull(userService);
-		Assertions.assertNotNull(userController);
-	}
+  @Test
+  void swagger() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs"))
+        .andExpectAll(MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
+            MockMvcResultMatchers.jsonPath("$.openapi").value("3.0.1"),
+            MockMvcResultMatchers.jsonPath("$.info").isMap())
+        .andDo(MockMvcResultHandlers.print());
+  }
 }
