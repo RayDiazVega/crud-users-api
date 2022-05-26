@@ -1,16 +1,10 @@
 package com.colpatria.crudusersapi.user.application;
 
-import com.colpatria.crudusersapi.user.dto.Task;
 import com.colpatria.crudusersapi.user.dto.User;
 import com.colpatria.crudusersapi.user.infrastructure.ports.UserRepository;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,8 +19,7 @@ public class UserService {
   private UserRepository userRepository;
 
   public User save(User user) {
-    Optional<User> userFind = userRepository.findByEmail(user.getEmail());
-    if (userFind.isPresent()) {
+    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
       throw new IllegalArgumentException("¡User email already exists!");
     }
     user.setId(null);
@@ -50,14 +43,13 @@ public class UserService {
   }
 
   public List<User> findByCreatedDateBetween(LocalDateTime from, LocalDateTime to) {
+    log.info("Find by created date between date range");
     return userRepository.findByCreatedDateBetween(from, to);
   }
 
   public User update(User user) {
-    User userFind = findById(user.getId());
-    if(!user.getEmail().equalsIgnoreCase(userFind.getEmail())) {
-      Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
-      if (optionalUser.isPresent()) {
+    if (!user.getEmail().equalsIgnoreCase(findById(user.getId()).getEmail())) {
+      if (userRepository.findByEmail(user.getEmail()).isPresent()) {
         throw new IllegalArgumentException("¡User email already exists!");
       }
     }
@@ -73,26 +65,5 @@ public class UserService {
   public void deleteAll() {
     log.info("Delete all users");
     userRepository.deleteAll();
-  }
-
-  @PostConstruct
-  public void insert() {
-    for (int i = 0; i < 50; i++) {
-      String generatedString = RandomStringUtils.randomAlphabetic(6);
-      User user = new User();
-      user.setNames(generatedString);
-      user.setSurnames(generatedString);
-      user.setEmail(generatedString + "@" + generatedString);
-      Set<Task> tasks = new HashSet<>();
-      for (int j = 0; j < 3; j++) {
-        Task task = new Task();
-        task.setName(generatedString);
-        task.setDescription(generatedString);
-        task.setPriority(1);
-        tasks.add(task);
-      }
-      user.setTasks(tasks);
-      save(user);
-    }
   }
 }
