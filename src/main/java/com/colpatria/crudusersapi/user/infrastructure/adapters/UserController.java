@@ -2,6 +2,8 @@ package com.colpatria.crudusersapi.user.infrastructure.adapters;
 
 import com.colpatria.crudusersapi.user.application.UserService;
 import com.colpatria.crudusersapi.user.dto.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.Valid;
@@ -29,11 +31,13 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @Operation(summary = "Create user")
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<User> save(@Valid @RequestBody User user) {
     return ResponseEntity.ok(userService.save(user));
   }
 
+  @Operation(summary = "Find all users")
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Page<User>> findAll(
       @RequestParam(defaultValue = "0", required = false) int page,
@@ -42,16 +46,23 @@ public class UserController {
     return ResponseEntity.ok(userService.findAll(page, size, sortBy));
   }
 
+  @Operation(summary = "Find user by id", parameters = {
+      @Parameter(name = "id", description = "Example value for id", example = "1")})
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<User> findById(@PathVariable Long id) {
     return ResponseEntity.ok(userService.findById(id));
   }
 
+  @Operation(summary = "Find user by email", parameters = {
+      @Parameter(name = "email", description = "Example value for email", example = "poraciusyettengia@imgur.com")})
   @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<User> findByEmail(@PathVariable String email) {
     return ResponseEntity.ok(userService.findByEmail(email));
   }
 
+  @Operation(summary = "Find users between date range ", parameters = {
+      @Parameter(name = "from", description = "Example value for from", example = "2022-05-26T00:00:00"),
+      @Parameter(name = "to", description = "Example value for to", example = "2022-05-26T23:59:59")})
   @GetMapping(value = "/createdDate/{from}/{to}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<User>> findByCreatedDateBetween(
       @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime from,
@@ -59,17 +70,21 @@ public class UserController {
     return ResponseEntity.ok(userService.findByCreatedDateBetween(from, to));
   }
 
+  @Operation(summary = "Update user")
   @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<User> update(@Valid @RequestBody User user) {
     return ResponseEntity.ok(userService.update(user));
   }
 
+  @Operation(summary = "Delete user by id", parameters = {
+      @Parameter(name = "id", description = "Example value for id", example = "1")})
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Void> deleteById(@PathVariable Long id) {
     userService.deleteById(id);
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Delete all user")
   @DeleteMapping
   public ResponseEntity<Void> deleteAll() {
     userService.deleteAll();
