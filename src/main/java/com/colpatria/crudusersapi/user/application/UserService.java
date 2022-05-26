@@ -33,17 +33,17 @@ public class UserService {
   }
 
   public User findById(Long id) {
-    log.info("Find by id");
+    log.info("Find user by id");
     return userRepository.findById(id).orElseThrow();
   }
 
   public User findByEmail(String email) {
-    log.info("Find by email");
+    log.info("Find user by email");
     return userRepository.findByEmail(email).orElseThrow();
   }
 
   public List<User> findByCreatedDateBetween(LocalDateTime from, LocalDateTime to) {
-    log.info("Find by created date between date range");
+    log.info("Find users by created date between date range");
     return userRepository.findByCreatedDateBetween(from, to);
   }
 

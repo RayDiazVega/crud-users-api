@@ -25,20 +25,20 @@ public class TaskController {
   @Autowired
   private TaskService taskService;
 
-  @PostMapping(value = "/{id}/task", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> save(@PathVariable Long id, @Valid @RequestBody Task task) {
-    taskService.save(id, task);
+  @PostMapping(value = "/{userId}/task", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> save(@PathVariable Long userId, @Valid @RequestBody Task task) {
+    taskService.save(userId, task);
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping(value = "/{id}/task", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Set<Task>> findAllByUserId(@PathVariable Long id) {
-    return ResponseEntity.ok(taskService.findAllByUserId(id));
+  @GetMapping(value = "/{userId}/task", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Set<Task>> findAllByUserId(@PathVariable Long userId) {
+    return ResponseEntity.ok(taskService.findAllByUserId(userId));
   }
 
-  @GetMapping(value = "/task/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Task> findById(@PathVariable Long id) {
-    return ResponseEntity.ok(taskService.findById(id));
+  @GetMapping(value = "/task/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Task> findById(@PathVariable Long taskId) {
+    return ResponseEntity.ok(taskService.findById(taskId));
   }
 
   @PutMapping(value = "/task", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,9 +46,9 @@ public class TaskController {
     return ResponseEntity.ok(taskService.update(task));
   }
 
-  @DeleteMapping(value = "/{id}/task")
-  public ResponseEntity<Void> deleteAllByUserId(@PathVariable Long id) {
-    taskService.deleteAllByUserId(id);
+  @DeleteMapping(value = "/task/{taskId}")
+  public ResponseEntity<Void> deleteById(@PathVariable Long taskId) {
+    taskService.deleteById(taskId);
     return ResponseEntity.ok().build();
   }
 }

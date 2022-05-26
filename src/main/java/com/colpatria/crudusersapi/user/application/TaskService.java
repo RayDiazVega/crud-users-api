@@ -19,20 +19,22 @@ public class TaskService {
   @Autowired
   private TaskRepository taskRepository;
 
-  public void save(Long id, Task task) {
+  public void save(Long userId, Task task) {
     task.setId(0L);
-    User user = userRepository.findById(id).orElseThrow();
+    User user = userRepository.findById(userId).orElseThrow();
     user.getTasks().add(task);
     log.info("Task created");
     userRepository.save(user);
   }
 
-  public Set<Task> findAllByUserId(Long id) {
-    return userRepository.findById(id).orElseThrow().getTasks();
+  public Set<Task> findAllByUserId(Long userId) {
+    log.info("Find task by user id");
+    return userRepository.findById(userId).orElseThrow().getTasks();
   }
 
-  public Task findById(Long id) {
-    return taskRepository.findById(id).orElseThrow();
+  public Task findById(Long taskId) {
+    log.info("Find task by id");
+    return taskRepository.findById(taskId).orElseThrow();
   }
 
   public Task update(Task task) {
@@ -41,7 +43,8 @@ public class TaskService {
     return taskRepository.save(task);
   }
 
-  public void deleteAllByUserId(Long id) {
-    taskRepository.deleteAll(findAllByUserId(id));
+  public void deleteById(Long taskId) {
+    log.info("Delete tasks by user id");
+    taskRepository.deleteById(taskId);
   }
 }
