@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TaskController {
 
@@ -29,7 +29,7 @@ public class TaskController {
 
   @Operation(summary = "Create task", parameters = {
       @Parameter(name = "userId", description = "Example value for user id", example = "1")})
-  @PostMapping(value = "/{userId}/task", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/{userId}/tasks", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> save(@PathVariable Long userId, @Valid @RequestBody Task task) {
     taskService.save(userId, task);
     return ResponseEntity.ok().build();
@@ -37,27 +37,27 @@ public class TaskController {
 
   @Operation(summary = "Find tasks by user id", parameters = {
       @Parameter(name = "userId", description = "Example value for user id", example = "1")})
-  @GetMapping(value = "/{userId}/task", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/{userId}/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Set<Task>> findAllByUserId(@PathVariable Long userId) {
     return ResponseEntity.ok(taskService.findAllByUserId(userId));
   }
 
   @Operation(summary = "Find task by id", parameters = {
       @Parameter(name = "taskId", description = "Example value for task id", example = "1")})
-  @GetMapping(value = "/task/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/tasks/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Task> findById(@PathVariable Long taskId) {
     return ResponseEntity.ok(taskService.findById(taskId));
   }
 
   @Operation(summary = "Update task")
-  @PutMapping(value = "/task", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(value = "/tasks", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Task> update(@Valid @RequestBody Task task) {
     return ResponseEntity.ok(taskService.update(task));
   }
 
   @Operation(summary = "Delete task by id", parameters = {
       @Parameter(name = "taskId", description = "Example value for task id", example = "1")})
-  @DeleteMapping(value = "/task/{taskId}")
+  @DeleteMapping(value = "/tasks/{taskId}")
   public ResponseEntity<Void> deleteById(@PathVariable Long taskId) {
     taskService.deleteById(taskId);
     return ResponseEntity.ok().build();
