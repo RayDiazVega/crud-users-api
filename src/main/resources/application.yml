@@ -14,3 +14,9 @@ server:
   port: 8080
   servlet:
     context-path: /crud-users-api
+
+info:
+  project:
+    version: @project.version@
+    name: @project.name@
+    description: @project.description@

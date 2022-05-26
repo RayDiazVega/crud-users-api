@@ -58,6 +58,7 @@ public class UserService {
   }
 
   public void deleteById(Long id) {
+    findById(id);
     log.info("User deleted");
     userRepository.deleteById(id);
   }
