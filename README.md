@@ -85,3 +85,12 @@ mvn test
     │                       └───adapters  
     └───resources
 ````
+
+Para la estructura de directorios y paquetes se decidió utilizar **arquitectura hexagonal** para
+separar los diferentes elementos de código en capas,
+reduciendo el acoplamiento entre diferentes elementos y minimizando los cambios necesarios en los
+elementos internos aunque los externos cambien.
+
+### Estrategia de Branching
+
+![img.png](img.png)
