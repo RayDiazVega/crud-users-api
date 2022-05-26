@@ -9,4 +9,11 @@ public class Constant {
       + "  \"email\": \"poraciusyettengia@imgur.com\",\n"
       + "  \"tasks\": []\n"
       + "}";
+
+  public static final String task = "{\n"
+      + "  \"id\": 1,\n"
+      + "  \"name\": \"Poracius Baudato\",\n"
+      + "  \"description\": \"Yettengia Kenicillate\",\n"
+      + "  \"priority\": 9\n"
+      + "}";
 }

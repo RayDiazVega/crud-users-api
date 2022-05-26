@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation.class)
-class UserControllerTest {
+class AUserControllerTest {
 
   @Autowired
   MockMvc mockMvc;
