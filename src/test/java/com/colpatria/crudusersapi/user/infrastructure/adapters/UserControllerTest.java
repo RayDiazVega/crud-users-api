@@ -2,6 +2,7 @@ package com.colpatria.crudusersapi.user.infrastructure.adapters;
 
 import com.colpatria.crudusersapi.constant.Constant;
 import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DisplayName("1-UserControllerTest")
 @TestMethodOrder(OrderAnnotation.class)
-class AUserControllerTest {
+class UserControllerTest {
 
   @Autowired
   MockMvc mockMvc;
@@ -27,10 +29,10 @@ class AUserControllerTest {
 
   @Test
   @Order(1)
-  void saveStatus200() throws Exception {
+  void saveStatus201() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON).content(user))
-        .andExpectAll(MockMvcResultMatchers.status().isOk(),
+        .andExpectAll(MockMvcResultMatchers.status().isCreated(),
             MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             MockMvcResultMatchers.jsonPath("$.id").isNumber(),
             MockMvcResultMatchers.jsonPath("$.email").isString())
