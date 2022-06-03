@@ -1,6 +1,7 @@
 package com.colpatria.crudusersapi.user.infrastructure.adapters;
 
 import com.colpatria.crudusersapi.constant.Constant;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DisplayName("2-TaskControllerTest")
 @TestMethodOrder(OrderAnnotation.class)
-class BTaskControllerTest {
+class TaskControllerTest {
 
   @Autowired
   MockMvc mockMvc;
@@ -28,15 +30,15 @@ class BTaskControllerTest {
 
   @Test
   @Order(1)
-  void saveStatus200() throws Exception {
+  void saveStatus201() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON).content(user))
-        .andExpectAll(MockMvcResultMatchers.status().isOk())
+        .andExpectAll(MockMvcResultMatchers.status().isCreated())
         .andDo(MockMvcResultHandlers.print());
 
     mockMvc.perform(MockMvcRequestBuilders.post("/users/2/tasks")
             .contentType(MediaType.APPLICATION_JSON).content(task))
-        .andExpectAll(MockMvcResultMatchers.status().isOk())
+        .andExpectAll(MockMvcResultMatchers.status().isCreated())
         .andDo(MockMvcResultHandlers.print());
   }
 
