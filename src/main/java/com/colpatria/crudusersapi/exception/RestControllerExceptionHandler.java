@@ -5,12 +5,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -26,26 +25,25 @@ public class RestControllerExceptionHandler {
 
   @ExceptionHandler(value = {IllegalArgumentException.class, MethodArgumentNotValidException.class,
       PropertyReferenceException.class, NoSuchElementException.class})
-  public ResponseEntity<Object> badRequest(Exception ex) {
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public Object badRequest(Exception ex) {
     ex.printStackTrace();
     Object error = isMethodArgumentNotValidException(ex);
-    return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON)
-        .body(Map.of("message", "Client error", "error", error,
-            "timestamp", LocalDateTime.now()));
+    return Map.of("message", "Client error", "error", error, "timestamp", LocalDateTime.now());
   }
 
-  @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<Object> methodNotAllowed(HttpRequestMethodNotSupportedException ex) {
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+  public Object methodNotAllowed(HttpRequestMethodNotSupportedException ex) {
     ex.printStackTrace();
-    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-        .contentType(MediaType.APPLICATION_JSON).body(Map.of("timestamp", LocalDateTime.now(),
-            "message", "Client error", "error", ex.getMessage()));
+    return Map.of("timestamp", LocalDateTime.now(), "message", "Client error", "error",
+        ex.getMessage());
   }
 
-  @ExceptionHandler(value = Exception.class)
-  public ResponseEntity<Object> internalServerError(Exception ex) {
+  @ExceptionHandler(Exception.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  public Object internalServerError(Exception ex) {
     ex.printStackTrace();
-    return ResponseEntity.internalServerError().contentType(MediaType.APPLICATION_JSON)
-        .body(Map.of("message", "Server error", "timestamp", LocalDateTime.now()));
+    return Map.of("message", "Server error", "timestamp", LocalDateTime.now());
   }
 }
